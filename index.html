@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIKESAN - Sistem Kesehatan Anak SD</title>
+  <link rel="stylesheet" href="src/styles/main.css">
+  <link rel="stylesheet" href="src/styles/login.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="login-container" id="login-page">
+    <div class="login-card">
+      <div class="login-header">
+        <img src="src/assets/images/logo.svg" alt="SIKESAN Logo" class="logo">
+        <h1>SIKESAN</h1>
+        <p>Sistem Kesehatan Anak Sekolah Dasar</p>
+      </div>
+      <div class="login-body">
+        <div class="login-message" id="login-message"></div>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="username">Nama Pengguna</label>
+            <input type="text" id="username" required autocomplete="username">
+          </div>
+          <div class="form-group">
+            <label for="password">Kata Sandi</label>
+            <input type="password" id="password" required autocomplete="current-password">
+          </div>
+          <div class="form-group">
+            <label for="role">Masuk Sebagai</label>
+            <select id="role" required>
+              <option value="">-- Pilih Peran --</option>
+              <option value="siswa">Siswa</option>
+              <option value="guru">Guru</option>
+              <option value="admin">Administrator</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Masuk</button>
+        </form>
+      </div>
+      <div class="login-footer">
+        <p>&copy; 2025 SIKESAN - Peduli Kesehatan Anak SD</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Halaman Siswa -->
+  <div class="dashboard-container" id="siswa-dashboard" style="display: none;">
+    <header class="dashboard-header">
+      <div class="header-brand">
+        <img src="src/assets/images/logo.svg" alt="SIKESAN Logo" class="logo-small">
+        <h1>SIKESAN</h1>
+      </div>
+      <div class="header-user">
+        <span id="siswa-nama">Nama Siswa</span>
+        <span id="siswa-kelas">Kelas</span>
+        <button id="siswa-logout" class="btn btn-outline">Keluar</button>
+      </div>
+    </header>
+    
+    <main class="dashboard-content">
+      <section class="welcome-section">
+        <h2>Selamat Datang, <span id="welcome-siswa-nama">Nama Siswa</span>!</h2>
+        <p>Bagaimana kesehatanmu hari ini?</p>
+      </section>
+      
+      <section class="health-input-section">
+        <div class="card">
+          <h3>Data Kesehatan Harian</h3>
+          <p class="card-subtitle">Tanggal: <span id="current-date"></span></p>
+          
+          <form id="health-form">
+            <div class="form-group">
+              <label for="suhu">Suhu Tubuh (°C)</label>
+              <input type="number" id="suhu" step="0.1" min="35" max="42" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="berat">Berat Badan (kg)</label>
+              <input type="number" id="berat" step="0.1" min="10" max="100" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="tinggi">Tinggi Badan (cm)</label>
+              <input type="number" id="tinggi" step="0.1" min="80" max="200" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="keluhan">Keluhan Kesehatan</label>
+              <textarea id="keluhan" rows="4" placeholder="Ceritakan jika ada keluhan kesehatanmu hari ini..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Simpan Data</button>
+          </form>
+        </div>
+      </section>
+      
+      <section class="health-history-section">
+        <div class="card">
+          <h3>Riwayat Kesehatan</h3>
+          <div class="history-tabs">
+            <button class="tab-btn active" data-tab="data">Data Kesehatan</button>
+            <button class="tab-btn" data-tab="feedback">Tanggapan Guru</button>
+          </div>
+          
+          <div class="tab-content" id="data-tab">
+            <div class="table-container">
+              <table class="health-table">
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                    <th>Suhu (°C)</th>
+                    <th>Berat (kg)</th>
+                    <th>Tinggi (cm)</th>
+                    <th>Keluhan</th>
+                  </tr>
+                </thead>
+                <tbody id="health-history">
+                  <!-- Data akan diisi melalui JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <div class="tab-content" id="feedback-tab" style="display: none;">
+            <div id="feedback-container">
+              <!-- Feedback akan diisi melalui JavaScript -->
+              <p class="empty-state">Belum ada tanggapan dari guru.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Halaman Guru -->
+  <div class="dashboard-container" id="guru-dashboard" style="display: none;">
+    <header class="dashboard-header">
+      <div class="header-brand">
+        <img src="src/assets/images/logo.svg" alt="SIKESAN Logo" class="logo-small">
+        <h1>SIKESAN</h1>
+      </div>
+      <div class="header-user">
+        <span id="guru-nama">Nama Guru</span>
+        <span id="guru-kelas">Wali Kelas</span>
+        <button id="guru-logout" class="btn btn-outline">Keluar</button>
+      </div>
+    </header>
+    
+    <main class="dashboard-content">
+      <section class="welcome-section">
+        <h2>Selamat Datang, <span id="welcome-guru-nama">Nama Guru</span>!</h2>
+        <p>Pantau kesehatan siswa di kelas Anda.</p>
+      </section>
+      
+      <section class="student-list-section">
+        <div class="card">
+          <h3>Daftar Siswa <span id="guru-kelas-display">Kelas</span></h3>
+          
+          <div class="filter-controls">
+            <div class="form-group">
+              <label for="filter-date">Tanggal</label>
+              <input type="date" id="filter-date">
+            </div>
+            <div class="form-group">
+              <label for="filter-status">Status</label>
+              <select id="filter-status">
+                <option value="semua">Semua</option>
+                <option value="sehat">Sehat</option>
+                <option value="perhatian">Perlu Perhatian</option>
+              </select>
+            </div>
+            <button id="refresh-data" class="btn btn-secondary">Perbarui Data</button>
+          </div>
+          
+          <div class="table-container">
+            <table class="students-table">
+              <thead>
+                <tr>
+                  <th>Nama Siswa</th>
+                  <th>Suhu (°C)</th>
+                  <th>Status</th>
+                  <th>Keluhan</th>
+                  <th>Tindakan</th>
+                </tr>
+              </thead>
+              <tbody id="students-list">
+                <!-- Data akan diisi melalui JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      
+      <section id="student-detail-section" class="student-detail-section" style="display: none;">
+        <div class="card">
+          <h3>Detail Siswa: <span id="detail-siswa-nama">Nama Siswa</span></h3>
+          <div class="detail-tabs">
+            <button class="tab-btn active" data-tab="health-data">Data Kesehatan</button>
+            <button class="tab-btn" data-tab="feedback-data">Tanggapan</button>
+          </div>
+          
+          <div class="tab-content" id="health-data-tab">
+            <div class="health-charts">
+              <div class="chart-card">
+                <h4>Grafik Suhu Tubuh</h4>
+                <div class="chart-placeholder" id="temp-chart">
+                  <!-- Chart akan dirender oleh JavaScript -->
+                </div>
+              </div>
+              
+              <div class="chart-card">
+                <h4>Grafik Berat & Tinggi Badan</h4>
+                <div class="chart-placeholder" id="growth-chart">
+                  <!-- Chart akan dirender oleh JavaScript -->
+                </div>
+              </div>
+            </div>
+            
+            <div class="table-container">
+              <table class="health-table">
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                    <th>Suhu (°C)</th>
+                    <th>Berat (kg)</th>
+                    <th>Tinggi (cm)</th>
+                    <th>Keluhan</th>
+                  </tr>
+                </thead>
+                <tbody id="student-health-history">
+                  <!-- Data akan diisi melalui JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <div class="tab-content" id="feedback-data-tab" style="display: none;">
+            <form id="feedback-form">
+              <div class="form-group">
+                <label for="feedback-text">Berikan Tanggapan</label>
+                <textarea id="feedback-text" rows="4" placeholder="Tulis tanggapan untuk siswa ini..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Kirim Tanggapan</button>
+            </form>
+            
+            <div class="feedback-history">
+              <h4>Riwayat Tanggapan</h4>
+              <div id="teacher-feedback-history">
+                <!-- Feedback akan diisi melalui JavaScript -->
+                <p class="empty-state">Belum ada riwayat tanggapan.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Halaman Admin -->
+  <div class="dashboard-container" id="admin-dashboard" style="display: none;">
+    <header class="dashboard-header">
+      <div class="header-brand">
+        <img src="src/assets/images/logo.svg" alt="SIKESAN Logo" class="logo-small">
+        <h1>SIKESAN</h1>
+      </div>
+      <div class="header-user">
+        <span id="admin-nama">Admin</span>
+        <button id="admin-logout" class="btn btn-outline">Keluar</button>
+      </div>
+    </header>
+    
+    <main class="dashboard-content">
+      <section class="welcome-section">
+        <h2>Selamat Datang, <span id="welcome-admin-nama">Admin</span>!</h2>
+        <p>Kelola sistem pemantauan kesehatan sekolah.</p>
+      </section>
+      
+      <div class="admin-tabs">
+        <button class="admin-tab-btn active" data-tab="accounts">Manajemen Akun</button>
+        <button class="admin-tab-btn" data-tab="reports">Laporan Kesehatan</button>
+      </div>
+      
+      <section id="accounts-section" class="accounts-section">
+        <div class="card">
+          <div class="card-header">
+            <h3>Manajemen Akun</h3>
+            <button id="add-account-btn" class="btn btn-primary">+ Tambah Akun Baru</button>
+          </div>
+          
+          <div class="account-tabs">
+            <button class="tab-btn active" data-account="siswa">Siswa</button>
+            <button class="tab-btn" data-account="guru">Guru</button>
+            <button class="tab-btn" data-account="admin">Administrator</button>
+          </div>
+          
+          <div class="filter-controls">
+            <div class="form-group">
+              <label for="search-account">Cari</label>
+              <input type="text" id="search-account" placeholder="Nama atau kelas...">
+            </div>
+            <button id="search-btn" class="btn btn-secondary">Cari</button>
+          </div>
+          
+          <div class="table-container">
+            <table class="accounts-table">
+              <thead>
+                <tr>
+                  <th>Nama</th>
+                  <th>Username</th>
+                  <th>Kelas</th>
+                  <th>Status</th>
+                  <th>Tindakan</th>
+                </tr>
+              </thead>
+              <tbody id="accounts-list">
+                <!-- Data akan diisi melalui JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      
+      <section id="reports-section" class="reports-section" style="display: none;">
+        <div class="card">
+          <h3>Laporan Kesehatan</h3>
+          
+          <div class="filter-controls">
+            <div class="form-group">
+              <label for="filter-report-class">Kelas</label>
+              <select id="filter-report-class">
+                <option value="semua">Semua Kelas</option>
+                <!-- Opsi kelas akan diisi melalui JavaScript -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="filter-report-date">Periode</label>
+              <select id="filter-report-date">
+                <option value="hari-ini">Hari Ini</option>
+                <option value="minggu-ini">Minggu Ini</option>
+                <option value="bulan-ini">Bulan Ini</option>
+              </select>
+            </div>
+            <button id="generate-report" class="btn btn-primary">Hasilkan Laporan</button>
+          </div>
+          
+          <div class="report-summary">
+            <div class="summary-card">
+              <h4>Total Siswa</h4>
+              <p class="summary-value" id="total-siswa">0</p>
+            </div>
+            <div class="summary-card">
+              <h4>Suhu Normal</h4>
+              <p class="summary-value" id="suhu-normal">0</p>
+            </div>
+            <div class="summary-card">
+              <h4>Perlu Perhatian</h4>
+              <p class="summary-value" id="perlu-perhatian">0</p>
+            </div>
+            <div class="summary-card">
+              <h4>Belum Lapor</h4>
+              <p class="summary-value" id="belum-lapor">0</p>
+            </div>
+          </div>
+          
+          <div class="report-charts">
+            <div class="chart-card">
+              <h4>Distribusi Status Kesehatan</h4>
+              <div class="chart-placeholder" id="health-status-chart">
+                <!-- Chart akan dirender oleh JavaScript -->
+              </div>
+            </div>
+            <div class="chart-card">
+              <h4>Keluhan Paling Umum</h4>
+              <div class="chart-placeholder" id="common-complaints-chart">
+                <!-- Chart akan dirender oleh JavaScript -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal untuk Account Management -->
+  <div id="account-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">Tambah Akun Baru</h3>
+        <button class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="account-form">
+          <input type="hidden" id="account-id">
+          <div class="form-group">
+            <label for="account-role">Peran</label>
+            <select id="account-role" required>
+              <option value="siswa">Siswa</option>
+              <option value="guru">Guru</option>
+              <option value="admin">Administrator</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="account-name">Nama Lengkap</label>
+            <input type="text" id="account-name" required>
+          </div>
+          <div class="form-group">
+            <label for="account-username">Username</label>
+            <input type="text" id="account-username" required>
+          </div>
+          <div class="form-group">
+            <label for="account-password">Password</label>
+            <input type="password" id="account-password" required>
+          </div>
+          <div class="form-group siswa-field">
+            <label for="account-kelas">Kelas</label>
+            <select id="account-kelas">
+              <option value="">-- Pilih Kelas --</option>
+              <!-- Opsi kelas akan diisi melalui JavaScript -->
+            </select>
+          </div>
+          <div class="form-group guru-field" style="display: none;">
+            <label for="account-wali-kelas">Wali Kelas</label>
+            <select id="account-wali-kelas">
+              <option value="">-- Pilih Kelas --</option>
+              <!-- Opsi kelas akan diisi melalui JavaScript -->
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="src/scripts/database.js"></script>
+  <script src="src/scripts/auth.js"></script>
+  <script src="src/scripts/siswa.js"></script>
+  <script src="src/scripts/guru.js"></script>
+  <script src="src/scripts/admin.js"></script>
+  <script src="src/scripts/app.js"></script>
+</body>
+</html>
